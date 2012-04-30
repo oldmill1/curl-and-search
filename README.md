@@ -1,4 +1,10 @@
-curl-and-search
+Curl and Search
 ===============
 
-curl a webpage and search it
+Pretty much what it says on the tin. 
+
+Params
+------
+
+**url** = The url to curl. 
+**search** = The term to search for. 
