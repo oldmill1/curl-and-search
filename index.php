@@ -1,16 +1,11 @@
 <?php
-if ( isset($_REQUEST['url']) ) { 
-	$url = "http://" . $_REQUEST['url']; 
-} else { 
-	$url = "http://www.orgasm.com/free-porn-blog/"; 
-} 
-
-if ( isset($_REQUEST['search']) ) { 
-	$find_string = $_REQUEST['search'];  
-} else { 
-	$find_string = "foo"; 
-} 
-
+/**  
+ * Basically do a curl_exec() and return the transfer to the page 
+ * 
+ * @param 	$url 					string The webpage to curl 
+ * @param 	$find_string 	string The search query 
+ * @return 	true if host responded with a code 200; false otherwise
+*/ 
 function do_curl( $url, $find_string ) { 
 	$ch = curl_init($url);
 		
@@ -41,13 +36,28 @@ function do_curl( $url, $find_string ) {
 		echo "<p>Found $count occurrences of $find_string.</p>"; 
 		
 		echo $curl_result; 
-		
 		curl_close($ch);
 		
+		return true; 
+		
 	} else { 
-		die("<p>Web host responded with a code $code. You might want to check the URL.</p>");  
+		echo "<p>Web host responded with a code $code. You might want to check the URL.</p>"; 
+		return false;   
 	} 
 } 
+
+if ( isset($_REQUEST['url']) ) { 
+	$url = "http://" . $_REQUEST['url']; 
+} else { 
+	$url = "http://www.orgasm.com/free-porn-blog/"; 
+} 
+
+if ( isset($_REQUEST['search']) ) { 
+	$find_string = $_REQUEST['search'];  
+} else { 
+	$find_string = "foo"; 
+} 
+
 
 do_curl( $url, $find_string ); 
 
