@@ -18,28 +18,35 @@ function do_curl( $url, $find_string ) {
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true ); 
 	
 	$curl_result = curl_exec($ch);
-	$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-
-	// find string in webpage
-	$haystack = $curl_result;  
-	$needle = $find_string; 
 	
-	$count = 0; 
+	$code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 	
-	while ( is_int(strpos($haystack, $needle)) ) { 
-		$substr = substr( $haystack, strpos($haystack, $needle), strlen($needle) );
-		$haystack = substr( $haystack, strpos($haystack, $needle)+strlen($needle) ); 	
-		$count++; 	
+	if ( $code == 200 ) { 
+		// find string in webpage
+		$haystack = $curl_result;  
+		$needle = $find_string; 
+		
+		$count = 0; 
+		
+		while ( is_int(strpos($haystack, $needle)) ) { 
+			$substr = substr( $haystack, strpos($haystack, $needle), strlen($needle) );
+			$haystack = substr( $haystack, strpos($haystack, $needle)+strlen($needle) ); 	
+			$count++; 	
+		} 
+		
+		echo "<h1>Curl Results</h1>"; 
+		echo "<p>Curl: <strong>$url</strong></p>"; 
+		echo "<p>HTTP Code: $code</p>"; 
+		echo "<p>Find String: \"$find_string\"</p>"; 
+		echo "<p>Found $count occurrences of $find_string.</p>"; 
+		
+		echo $curl_result; 
+		
+		curl_close($ch);
+		
+	} else { 
+		die("<p>Web host responded with a code $code. You might want to check the URL.</p>");  
 	} 
-	
-	echo "<h1>Curl Results</h1>"; 
-	echo "<p>Curl: <strong>$url</strong></p>"; 
-	echo "<p>HTTP Code: $httpCode</p>"; 
-	echo "<p>Find String: \"$find_string\"</p>"; 
-	echo "<p>Found $count occurrences of $find_string.</p>"; 
-	
-	echo $curl_result; 
-	curl_close($ch);
 } 
 
 do_curl( $url, $find_string ); 
