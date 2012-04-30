@@ -4,9 +4,9 @@
  * 
  * @param 	$url 					string The webpage to curl 
  * @param 	$find_string 	string The search query 
- * @return 	true if host responded with a code 200; false otherwise
+ * @return 	$data					array  An array containing the URL and the number of search results found. False if failure. 
 */ 
-function do_curl( $url, $find_string ) { 
+function do_curl( $url, $find_string, $show = false ) { 
 	$ch = curl_init($url);
 		
 	curl_setopt($ch, CURLOPT_HEADER, 0);
@@ -35,16 +35,21 @@ function do_curl( $url, $find_string ) {
 		echo "<p>Find String: \"$find_string\"</p>"; 
 		echo "<p>Found $count occurrences of $find_string.</p>"; 
 		
-		echo $curl_result; 
+		if ( $show ) 
+			echo $curl_result; 
+			
 		curl_close($ch);
 		
-		return true; 
+		$array = array( "find_string" => $find_string, "url" => $url, "num" => $count ); 
+		
+		return $array; 
 		
 	} else { 
 		echo "<p>Web host responded with a code $code. You might want to check the URL.</p>"; 
 		return false;   
 	} 
 } 
+
 
 if ( isset($_REQUEST['url']) ) { 
 	$url = "http://" . $_REQUEST['url']; 
@@ -58,9 +63,30 @@ if ( isset($_REQUEST['search']) ) {
 	$find_string = "foo"; 
 } 
 
+do_curl( $url, $find_string, true ); 
+ 
 
-do_curl( $url, $find_string ); 
+//$response = do_curl( "http://www.orgasm.com/free-porn-blog/page/2/", "Porn" ); 
+/* 
+$page = 2; 
+$url = "http://www.orgasm.com/free-porn-blog/page/$page/"; 
 
+while ( $response = do_curl($url, "index.html") ) { 
+	$page++; 
+	$url = "http://www.orgasm.com/free-porn-blog/page/$page/"; 
+	
+	if ( is_array($response) ) { 
+		$log = "log.txt"; 
+		$fh = fopen($log, 'a') or die("Can't open file");
+		if ( $response['num'] > 0 ) { 
+			// log that we have found some search results 
+			$newline = "[{$response['find_string']}] - [{$response['num']}] - {$response['url']}\n";
+			fwrite($fh, $newline); 
+			fclose($fh);
+		}  
+	} 
+} 
+*/ 
 
 
 
