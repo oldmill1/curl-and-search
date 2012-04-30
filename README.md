@@ -1,18 +1,14 @@
 Curl and Search
 ===============
 
-Pretty much what it says on the tin. 
+<p>Pretty much what it says on the tin. </p>
 
-How to use
-----------
+<h2>How to use</h2>
 
-1. Go here: http://php-curl-tool.orchestra.io/
-2. Then, do something like http://php-curl-tool.orchestra.io/?url=www.myspace.com&searc=foo
+<p>Say you want to know how many times the string "foo" appears in the returned HTML of www.myspace.com. Visit: <a href="http://php-curl-tool.orchestra.io/?url=www.myspace.com&amp;searc=foo">http://php-curl-tool.orchestra.io/?url=www.myspace.com&amp;search=foo</a></p>
 
-Params
-------
+<h2>Params</h2>
 
-**url** = The url to curl. 
+<p><strong>url</strong> = The webpage to curl. </p>
 
-**search** = The term to search for. 
-
+<p><strong>search</strong> = The string to search for. </p>
